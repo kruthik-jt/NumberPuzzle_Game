@@ -36,27 +36,54 @@ class CustomNumberPuzzleControl extends NumberPuzzleControl {
 		Button buttonClicked = game.getButtonClicked();
 		Button[] buttons = game.getButtons();
 		
-		//Your logic here		
-		
+		//Your logic here
+		Button emptyButton=new Button();
+		int buttonClickedId=0,emptyButtonId=0;
+		for(int i=0;i<buttons.length;i++) {
+			if(buttons[i].getLabel()=="  ") {
+				emptyButton=buttons[i];
+				emptyButtonId=i;
+			}
+		}
+		for(int i=0;i<buttons.length;i++) {	
+			if(buttons[i]==buttonClicked)
+				if(i==emptyButtonId+1 || i==emptyButtonId-1 || i==emptyButtonId+4 || i==emptyButtonId-4) {
+					buttonClickedId=Integer.valueOf(buttons[i].getLabel());
+					swapButton(emptyButton, buttonClicked);	
+					emptyCellId=buttonClickedId;}
+			
+		}
 		return emptyCellId;
 
 	}
 	public int[] getRandomNumbersForGrid() {
 		int arr[] = new int[15];
-		
 		//Your logic here
-		int a = getRandomNumber();
-		
-		
+		for(int i=0;i<arr.length;i++) {
+			arr[i]=i+1;
+		}
+		int temp=0;
+		for(int i=0;i<arr.length;i++) {
+			int a = getRandomNumber()%15;
+			if(a<0)
+				a=a*-1;
+			temp=arr[i];
+			arr[i]=arr[a];
+			arr[a]=temp;
+		}
 		return arr;
 	}
 	public boolean checkForWinner(Button[] buttons)
 	{
 		boolean winner = true;
-		
 		// Your Logic here
-		getIntegerArrayOfButtonIds(buttons);
-
+		int arr[]=getIntegerArrayOfButtonIds(buttons);
+		for(int i=0;i<arr.length;i++) {
+			if(arr[i]!=i+1) {
+				winner=false;
+				break;
+			}
+		}
 		return winner;
 	}
 }
